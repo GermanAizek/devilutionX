@@ -1937,16 +1937,13 @@ bool Player::HasItem(int item, int *idx) const
 
 void Player::RemoveInvItem(int iv, bool calcScrolls)
 {
-	iv++;
-
 	// Iterate through invGrid and remove every reference to item
 	for (int8_t &itemId : InvGrid) {
-		if (itemId == iv || itemId == -iv) {
+		if (abs(itemId) - 1 == iv) {
 			itemId = 0;
 		}
 	}
 
-	iv--;
 	_pNumInv--;
 
 	// If the item at the end of inventory array isn't the one we removed, we need to swap its position in the array with the removed item
