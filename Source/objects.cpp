@@ -3526,9 +3526,9 @@ bool OperateShrineMurphys(int pnum)
 
 void OperateShrine(int pnum, int i, _sfx_id sType)
 {
-	if (dropGoldFlag) {
+	if (IsDropGoldOpen) {
 		CloseGoldDrop();
-		dropGoldValue = 0;
+		DropGoldValue = 0;
 	}
 
 	assert(i >= 0 && i < MAXOBJECTS);

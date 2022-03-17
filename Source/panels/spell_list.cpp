@@ -123,6 +123,10 @@ void DrawSpell(const Surface &out)
 
 void DrawSpellList(const Surface &out)
 {
+	if (!spselflag) {
+		return;
+	}
+
 	infostr[0] = '\0';
 	ClearPanel();
 

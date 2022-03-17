@@ -33,26 +33,26 @@ namespace devilution {
 #define SPANEL_HEIGHT 352
 
 extern bool drawhpflag;
-extern bool dropGoldFlag;
+extern bool IsDropGoldOpen;
 extern bool chrbtn[4];
-extern bool lvlbtndown;
-extern int dropGoldValue;
+extern int DropGoldValue;
 extern bool drawmanaflag;
 extern bool chrbtnactive;
 extern DVL_API_FOR_TEST int pnumlines;
 extern UiFlags InfoColor;
 extern char tempstr[256];
 extern int sbooktab;
-extern int8_t initialDropGoldIndex;
+extern int8_t InitialDropGoldIndex;
 extern bool talkflag;
 extern bool sbookflag;
 extern bool chrflag;
 extern bool drawbtnflag;
 extern char infostr[128];
 extern bool panelflag;
-extern int initialDropGoldValue;
+extern int InitialDropGoldValue;
 extern bool panbtndown;
 extern bool spselflag;
+
 const Rectangle &GetMainPanel();
 const Rectangle &GetLeftPanel();
 const Rectangle &GetRightPanel();
@@ -164,16 +164,16 @@ void FreeControlPan();
  * Sets a string to be drawn in the info box and then draws it.
  */
 void DrawInfoBox(const Surface &out);
-void CheckLvlBtn();
-void ReleaseLvlBtn();
-void DrawLevelUpIcon(const Surface &out);
+bool CheckLevelUpButtonPress();
+void CheckLevelUpButtonRelease();
+void DrawLevelUpButton(const Surface &out);
 void CheckChrBtns();
 void ReleaseChrBtns(bool addAllStatPoints);
 void DrawDurIcon(const Surface &out);
 void RedBack(const Surface &out);
 void DrawSpellBook(const Surface &out);
 void DrawGoldSplit(const Surface &out, int amount);
-void control_drop_gold(char vkey);
+void DropGoldKeyPress(char vkey);
 void DrawTalkPan(const Surface &out);
 bool control_check_talk_btn();
 void control_release_talk_btn();

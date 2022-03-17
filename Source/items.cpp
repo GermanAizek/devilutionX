@@ -2461,7 +2461,7 @@ bool IsItemAvailable(int i)
 	        *sgOptions.Gameplay.testBard && IsAnyOf(i, IDI_BARDSWORD, IDI_BARDDAGGER));
 }
 
-BYTE GetOutlineColor(const Item &item, bool checkReq)
+uint8_t GetOutlineColor(const Item &item, bool checkReq)
 {
 	if (checkReq && !item._iStatFlag)
 		return ICOL_RED;
@@ -3955,6 +3955,10 @@ void DoOil(Player &player, int cii)
 
 void DrawUniqueInfo(const Surface &out)
 {
+	if (!ShowUniqueItemInfoBox) {
+		return;
+	}
+
 	const Point position = GetRightPanel().position - Displacement { SPANEL_WIDTH, 0 };
 	if ((chrflag || QuestLogIsOpen) && GetLeftPanel().Contains(position)) {
 		return;

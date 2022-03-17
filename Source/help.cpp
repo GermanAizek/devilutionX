@@ -170,6 +170,10 @@ void InitHelp()
 
 void DrawHelp(const Surface &out)
 {
+	if (!HelpFlag) {
+		return;
+	}
+
 	DrawSTextHelp();
 	DrawQTextBack(out);
 

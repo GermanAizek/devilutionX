@@ -329,7 +329,7 @@ void LeftMouseDown(int wParam)
 			} else if (chrflag && GetLeftPanel().Contains(MousePosition)) {
 				CheckChrBtns();
 			} else if (invflag && GetRightPanel().Contains(MousePosition)) {
-				if (!dropGoldFlag)
+				if (!IsDropGoldOpen)
 					CheckInvItem(isShiftHeld, isCtrlHeld);
 			} else if (sbookflag && GetRightPanel().Contains(MousePosition)) {
 				CheckSBook();
@@ -339,14 +339,12 @@ void LeftMouseDown(int wParam)
 					NewCursor(CURSOR_HAND);
 				}
 			} else {
-				if (Players[MyPlayerId]._pStatPts != 0 && !spselflag)
-					CheckLvlBtn();
-				if (!lvlbtndown)
+				if (!CheckLevelUpButtonPress())
 					LeftMouseCmd(isShiftHeld);
 			}
 		}
 	} else {
-		if (!talkflag && !dropGoldFlag && !gmenu_is_active())
+		if (!talkflag && !IsDropGoldOpen && !gmenu_is_active())
 			CheckInvScrn(isShiftHeld, isCtrlHeld);
 		DoPanBtn();
 		if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
@@ -363,8 +361,7 @@ void LeftMouseUp(int wParam)
 		CheckBtnUp();
 	if (chrbtnactive)
 		ReleaseChrBtns(isShiftHeld);
-	if (lvlbtndown)
-		ReleaseLvlBtn();
+	CheckLevelUpButtonRelease();
 	if (stextflag != STORE_NONE)
 		ReleaseStoreBtn();
 }
@@ -409,7 +406,7 @@ bool PressSysKey(int wParam)
 
 void ReleaseKey(int vkey)
 {
-	if (sgnTimeoutCurs != CURSOR_NONE || dropGoldFlag)
+	if (sgnTimeoutCurs != CURSOR_NONE || IsDropGoldOpen)
 		return;
 	sgOptions.Keymapper.KeyReleased(vkey);
 }
@@ -460,7 +457,7 @@ void PressKey(int vkey)
 		return;
 	}
 
-	if (sgnTimeoutCurs != CURSOR_NONE || dropGoldFlag) {
+	if (sgnTimeoutCurs != CURSOR_NONE || IsDropGoldOpen) {
 		return;
 	}
 
@@ -551,8 +548,8 @@ void PressChar(char vkey)
 		doom_close();
 		return;
 	}
-	if (dropGoldFlag) {
-		control_drop_gold(vkey);
+	if (IsDropGoldOpen) {
+		DropGoldKeyPress(vkey);
 		return;
 	}
 
@@ -1939,8 +1936,8 @@ bool PressEscKey()
 		rv = true;
 	}
 
-	if (dropGoldFlag) {
-		control_drop_gold(DVL_VK_ESCAPE);
+	if (IsDropGoldOpen) {
+		DropGoldKeyPress(DVL_VK_ESCAPE);
 		rv = true;
 	}
 

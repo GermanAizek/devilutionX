@@ -1275,31 +1275,14 @@ void DrawView(const Surface &out, Point startPosition)
 	} else if (QuestLogIsOpen) {
 		DrawQuestLog(out);
 	}
-	if (ControlMode != ControlTypes::VirtualGamepad && !chrflag && Players[MyPlayerId]._pStatPts != 0 && !spselflag
-	    && (!QuestLogIsOpen || !GetLeftPanel().Contains(GetMainPanel().position + Displacement { 0, -74 }))) {
-		DrawLevelUpIcon(out);
-	}
-	if (ShowUniqueItemInfoBox) {
-		DrawUniqueInfo(out);
-	}
-	if (qtextflag) {
-		DrawQText(out);
-	}
-	if (spselflag) {
-		DrawSpellList(out);
-	}
-	if (dropGoldFlag) {
-		DrawGoldSplit(out, dropGoldValue);
-	}
-	if (HelpFlag) {
-		DrawHelp(out);
-	}
-	if (ChatLogFlag) {
-		DrawChatLog(out);
-	}
-	if (IsDiabloMsgAvailable()) {
-		DrawDiabloMsg(out);
-	}
+	DrawLevelUpButton(out);
+	DrawUniqueInfo(out);
+	DrawQText(out);
+	DrawSpellList(out);
+	DrawGoldSplit(out, DropGoldValue);
+	DrawHelp(out);
+	DrawChatLog(out);
+	DrawDiabloMsg(out);
 	if (MyPlayerIsDead) {
 		RedBack(out);
 	} else if (PauseMode != 0) {

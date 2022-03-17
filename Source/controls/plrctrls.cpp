@@ -1659,25 +1659,15 @@ void PerformSpellAction()
 
 void CtrlUseInvItem()
 {
-	Item *item;
-
 	if (pcursinvitem == -1)
 		return;
 
-	auto &myPlayer = Players[MyPlayerId];
-
-	if (pcursinvitem < INVITEM_INV_FIRST)
-		item = &myPlayer.InvBody[pcursinvitem];
-	else if (pcursinvitem <= INVITEM_INV_LAST)
-		item = &myPlayer.InvList[pcursinvitem - INVITEM_INV_FIRST];
-	else
-		item = &myPlayer.SpdList[pcursinvitem - INVITEM_BELT_FIRST];
-
-	if (item->IsScroll() && spelldata[item->_iSpell].sTargeted) {
+	const Item &item = GetInventoryItem(pcursinvitem);
+	if (item.IsScroll() && spelldata[item._iSpell].sTargeted) {
 		return;
 	}
 
-	if (item->isEquipment()) {
+	if (item.isEquipment()) {
 		int itemId = GetItemIdOnSlot(Slot);
 		CheckInvItem(true, false); // auto-equip if it's an equipment
 		if (itemId != GetItemIdOnSlot(Slot))

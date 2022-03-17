@@ -666,9 +666,9 @@ void CheckInvCut(int pnum, Point cursorPosition, bool automaticMove, bool dropIt
 		return;
 	}
 
-	if (dropGoldFlag) {
+	if (IsDropGoldOpen) {
 		CloseGoldDrop();
-		dropGoldValue = 0;
+		DropGoldValue = 0;
 	}
 
 	bool done = false;
@@ -1144,14 +1144,14 @@ bool CanUseStaff(Item &staff, spell_id spell)
 
 void StartGoldDrop()
 {
-	initialDropGoldIndex = pcursinvitem;
+	InitialDropGoldIndex = pcursinvitem;
 
 	auto &myPlayer = Players[MyPlayerId];
 
 	if (pcursinvitem <= INVITEM_INV_LAST)
-		initialDropGoldValue = myPlayer.InvList[pcursinvitem - INVITEM_INV_FIRST]._ivalue;
+		InitialDropGoldValue = myPlayer.InvList[pcursinvitem - INVITEM_INV_FIRST]._ivalue;
 	else
-		initialDropGoldValue = myPlayer.SpdList[pcursinvitem - INVITEM_BELT_FIRST]._ivalue;
+		InitialDropGoldValue = myPlayer.SpdList[pcursinvitem - INVITEM_BELT_FIRST]._ivalue;
 
 	if (talkflag)
 		control_reset_talk();
@@ -1160,8 +1160,8 @@ void StartGoldDrop()
 	SDL_Rect rect = MakeSdlRect(start.x, start.y, 180, 20);
 	SDL_SetTextInputRect(&rect);
 
-	dropGoldFlag = true;
-	dropGoldValue = 0;
+	IsDropGoldOpen = true;
+	DropGoldValue = 0;
 	SDL_StartTextInput();
 }
 
@@ -1612,9 +1612,9 @@ void CheckItemStats(Player &player)
 void InvGetItem(int pnum, int ii)
 {
 	auto &item = Items[ii];
-	if (dropGoldFlag) {
+	if (IsDropGoldOpen) {
 		CloseGoldDrop();
-		dropGoldValue = 0;
+		DropGoldValue = 0;
 	}
 
 	if (dItem[item.position.x][item.position.y] == 0)
@@ -1648,9 +1648,9 @@ void AutoGetItem(int pnum, Item *item, int ii)
 		return;
 	}
 
-	if (dropGoldFlag) {
+	if (IsDropGoldOpen) {
 		CloseGoldDrop();
-		dropGoldValue = 0;
+		DropGoldValue = 0;
 	}
 
 	if (dItem[item->position.x][item->position.y] == 0)
@@ -2042,6 +2042,19 @@ bool UseStaff()
 	return CanUseStaff(myPlayer.InvBody[INVLOC_HAND_LEFT], myPlayer._pRSpell);
 }
 
+const Item &GetInventoryItem(int location)
+{
+	Player &myPlayer = Players[MyPlayerId];
+
+	if (location < INVITEM_INV_FIRST)
+		return myPlayer.InvBody[location];
+
+	if (location <= INVITEM_INV_LAST)
+		return myPlayer.InvList[location - INVITEM_INV_FIRST];
+
+	return myPlayer.SpdList[location - INVITEM_BELT_FIRST];
+}
+
 bool UseInvItem(int pnum, int cii)
 {
 	int c;
@@ -2119,9 +2132,9 @@ bool UseInvItem(int pnum, int cii)
 		return true;
 	}
 
-	if (dropGoldFlag) {
+	if (IsDropGoldOpen) {
 		CloseGoldDrop();
-		dropGoldValue = 0;
+		DropGoldValue = 0;
 	}
 
 	if (item->IsScroll() && currlevel == 0 && !spelldata[item->_iSpell].sTownSpell) {
